@@ -64,50 +64,55 @@ class MyHomePage extends HookWidget {
       initialState: AppState.zero(),
       initialAction: null,
     );
+
+    final useAppLife = useAppLifecycleState();
     return Scaffold(
       appBar: AppBar(
         title: Text('HomePage'),
       ),
-      body: Column(
-        children: [
-          Row(
-            children: [
-              TextButton(
-                  onPressed: () {
-                    store.dispatch(AppActions.RotateRight);
-                  },
-                  child: Text('RotateRight')),
-              TextButton(
-                  onPressed: () {
-                    store.dispatch(AppActions.RotateLeft);
-                  },
-                  child: Text('Rotateleft')),
-              TextButton(
-                  onPressed: () {
-                    store.dispatch(AppActions.IncreaseAlpha);
-                  },
-                  child: Text('+ Alpha')),
-              TextButton(
-                  onPressed: () {
-                    store.dispatch(AppActions.DecreaseAlpha);
-                  },
-                  child: Text('- Alpha')),
-            ],
-          ),
-          SizedBox(
-            height: 100,
-          ),
-          Opacity(
-            opacity: store.state.alpha,
-            child: RotationTransition(
-                turns: AlwaysStoppedAnimation(store.state.rotateDeg / 360.0),
-                child: Image.asset(
-                  'assets/images/myimage.png',
-                  height: 500,
-                  width: double.infinity,
-                )),
-          ),
-        ],
+      body: Opacity(
+        opacity: useAppLife == AppLifecycleState.resumed ? 1.0 : 0.0,
+        child: Column(
+          children: [
+            Row(
+              children: [
+                TextButton(
+                    onPressed: () {
+                      store.dispatch(AppActions.RotateRight);
+                    },
+                    child: Text('RotateRight')),
+                TextButton(
+                    onPressed: () {
+                      store.dispatch(AppActions.RotateLeft);
+                    },
+                    child: Text('Rotateleft')),
+                TextButton(
+                    onPressed: () {
+                      store.dispatch(AppActions.IncreaseAlpha);
+                    },
+                    child: Text('+ Alpha')),
+                TextButton(
+                    onPressed: () {
+                      store.dispatch(AppActions.DecreaseAlpha);
+                    },
+                    child: Text('- Alpha')),
+              ],
+            ),
+            SizedBox(
+              height: 100,
+            ),
+            Opacity(
+              opacity: store.state.alpha,
+              child: RotationTransition(
+                  turns: AlwaysStoppedAnimation(store.state.rotateDeg / 360.0),
+                  child: Image.asset(
+                    'assets/images/myimage.png',
+                    height: 500,
+                    width: double.infinity,
+                  )),
+            ),
+          ],
+        ),
       ),
     );
   }
